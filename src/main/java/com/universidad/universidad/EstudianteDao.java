@@ -98,7 +98,7 @@ public class EstudianteDao {
         return estudiantes;
         
     }
-
+// Funcion para obtenerEstudiantesPorId el cual nos permite actualizar los datos de los estudiantes 
   public Estudiante obtenerEstudiantePorId(int id){
     Connection conn = null;
     PreparedStatement stmt = null;
@@ -133,5 +133,28 @@ public class EstudianteDao {
 
     return estudiante;
 }
-
+ /*
+    Se crea una función para contar el numero de estudiantes e implementar en dashboard principal y muestre en una card el numerode estudiantes
+  */
+  
+  public int contarEstudiantes(){
+   int total = 0;
+   Connection conn = null;
+   PreparedStatement stmt = null;
+   ResultSet rs = null;
+   try{
+       conn = ConexionDao.obtenerConexion();
+       String sql = "SELECT COUNT(*) FROM estudiantes;";
+       stmt = conn.prepareStatement(sql);
+       rs = stmt.executeQuery();
+       if(rs.next()){
+           total = rs.getInt(1);
+       }
+   }catch(Exception e ){
+       System.out.println("Error al contar estudiantes" +e.getMessage());
+   }finally{
+     ConexionDao.cerrarConexion(conn);
+   }
+   return total;
+  }
 }
